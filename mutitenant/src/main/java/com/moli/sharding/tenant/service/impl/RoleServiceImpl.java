@@ -16,9 +16,4 @@ import java.util.List;
  */
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
-    @Override
-    public boolean saveUserRole(Long userId, List<Long> roleId) {
-        int rows = this.baseMapper.saveUserRole(userId, roleId);
-        return rows == roleId.size();
-    }
 }

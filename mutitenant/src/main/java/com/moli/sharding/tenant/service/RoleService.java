@@ -10,6 +10,4 @@ import java.util.List;
  * @time 2024-07-28 14:54:52
  */
 public interface RoleService extends IService<Role> {
-
-    boolean saveUserRole(Long userId, List<Long> roleId);
 }
