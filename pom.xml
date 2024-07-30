@@ -13,6 +13,7 @@
         <module>infrastructure</module>
         <module>mutitenant</module>
         <module>dy_datasource_demo</module>
+        <module>dy_datasuource_dep</module>
     </modules>
 
     <groupId>com.moli.sharding</groupId>
