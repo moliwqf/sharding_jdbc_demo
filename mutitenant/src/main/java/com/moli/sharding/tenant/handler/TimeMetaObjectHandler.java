@@ -1,4 +1,4 @@
-package com.moli.sharding.infra.handler;
+package com.moli.sharding.tenant.handler;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import lombok.extern.slf4j.Slf4j;

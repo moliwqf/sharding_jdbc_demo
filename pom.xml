@@ -11,6 +11,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>infrastructure</module>
+        <module>mutitenant</module>
     </modules>
 
     <groupId>com.moli.sharding</groupId>

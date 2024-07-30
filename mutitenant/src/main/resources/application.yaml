@@ -1,0 +1,80 @@
+spring:
+  shardingsphere:
+    # 数据源配置
+    datasource:
+      # 数据源名称，多数据源以逗号分隔 ,放在第一个的数据源为未配置分片规则表的默认数据源
+      names: backend, front
+      backend:
+        # 数据库连接池类名称
+        type: com.zaxxer.hikari.HikariDataSource
+        # 数据库驱动类名
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/test_db_tenant_a?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+        username: root
+        password: 123456
+      front:
+        # 数据库连接池类名称
+        type: com.zaxxer.hikari.HikariDataSource
+        # 数据库驱动类名
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/test_db_tenant_b?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+        username: root
+        password: 123456
+    # 规则配置
+    rules:
+      sharding:
+        # 分片算法配置
+        sharding-algorithms:
+          hint-algorithm:
+            # 分片算法类型
+            type: CLASS_BASED
+            props:
+              strategy: hint
+              # 分片算法的行表达式
+              algorithmClassName: com.moli.sharding.tenant.algorithm.MyHintShardingAlgorithm
+        default-database-strategy:
+          hint:
+            sharding-algorithm-name: hint-algorithm
+        # 分布式序列算法配置
+        key-generators:
+          snowflake:
+            # 分布式序列算法（雪花算法：SNOWFLAKE； UUID：UUID）（注：UUID没有props配置）
+            type: snowflake
+            # 分布式序列算法属性配置
+            props:
+              # 工作机器唯一标识
+              worker-id: 1
+        tables:
+          # 逻辑表名称
+          tb_user:
+            # key 生成策略
+            key-generate-strategy:
+              column: id
+              key-generator-name: snowflake
+            # 数据节点
+            actual-data-nodes: ${['backend', 'front']}.tb_user
+            tableStrategy:
+              none:
+          tb_role:
+            key-generate-strategy:
+              column: id
+              key-generator-name: snowflake
+            actual-data-nodes: ${['backend', 'front']}.tb_role
+            tableStrategy:
+              none:
+          tb_user_role:
+            key-generate-strategy:
+              column: id
+              key-generator-name: snowflake
+            actual-data-nodes: ${['backend', 'front']}.tb_user_role
+            tableStrategy:
+              none:
+    # 属性配置
+    props:
+      # 展示修改以后的sql语句
+      sql-show: true
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**.xml
+  global-config:
+    db-config:
+      table-prefix: tb_
